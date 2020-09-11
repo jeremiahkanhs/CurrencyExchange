@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<style>
+#div1, #div2{
+	margin-right:10px;
+	display:inline-block;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<body>
+
+<h1>Currency Conversion</h1>
+
+<p>Please select available currency from dropdown</p>
+<div>
+<form id="currencyForm">
+<div id="div1">
+  <label for="fromCurrency">From Currency</label>
+  <br/>
+  <select name="fromCurrency" id="fromCurrency">
+    <option value="SGD">SGD</option>
+    <option value="USD">USD</option>
+  </select>
+  <input style="width:100px" type="text" id="exchangeAmount" name="exchangeAmount">
+</div>
+  
+<div id="div2">
+  <label for="toCurrency">To Currency</label>
+  <br/>
+  <select name="toCurrency" id="toCurrency">
+    <option value="SGD">SGD</option>
+    <option value="USD">USD</option>
+  </select>
+  <input style="width:100px" id="exchangedAmount" readonly>
+</div>
+
+ <br/> <br/>
+  <input id="submitBtn" type="button" value="Get Exchange Rate">
+</form>
+</div>
+
+</body>
+<script>
+	$("#submitBtn").click(function(event){
+		event.preventDefault();
+		$.ajax({
+		   type:'POST',
+		   url :"/currencyExchange",
+		   dataType:"json",
+		   data : {fromCurrency : document.getElementById("fromCurrency").value,
+					toCurrency : document.getElementById("toCurrency").value,
+					exchangeAmount : document.getElementById("exchangeAmount").value},
+		   success: function(data) {
+		        $("#exchangedAmount").val(data);
+		   },
+		   error:function(exception){
+			   alert('Exeption:'+exception);
+			}
+	})});
+</script>
+</html>
